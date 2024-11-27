@@ -143,6 +143,7 @@ class PumpController(pumploop_services.PumpControllerServicer):
                                          ambientPress = sensors.ambientPress)
             
     def GetSensorStream(self, request, context):
+        print("Stream")
         yield pumploop_messages.Sensors(tankLevel = sensors.tankLevel,
                                          tankTemp = sensors.tankTemp,
                                          dutFlow = sensors.dutFlow,
