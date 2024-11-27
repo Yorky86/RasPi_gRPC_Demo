@@ -1,0 +1,210 @@
+// Copyright 2015 gRPC authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.grpc.examples.helloworld";
+option java_outer_classname = "HelloWorldProto";
+option objc_class_prefix = "HLW";
+
+package pumploop;
+
+// The greeting service definition.
+service PumpController {
+  // Sends a greeting
+  
+/*  rpc SetSystemInfo (SetSysInfRequest) returns (SetSysInfResult) {}
+  rpc GetSystemInfo (GetSysInfRequest) returns (SystemInfo) {}
+  rpc SetValveStatus (SetValveRequest) returns (SetValveResult) {}
+  rpc GetValveStatus (GetValveRequest) returns (GetValveResult) {}
+  rpc GetSensorReading (GetSensorRequest) returns (GetSensorResult) {}
+  rpc GetSensorStream (GetSensorRequest) returns (stream GetSensorResult) {}
+  rpc SetSystemControl (SetControlRequest) returns (SetControlResult) {}
+  rpc GetSystemControl (GetControlRequest) returns (GetControlResult) {}*/
+  
+  
+  
+  rpc SetSystemInfo (SystemInfo) returns (SystemInfo) {}
+  rpc GetSystemInfo (GetSysInfRequest) returns (SystemInfo) {}
+  rpc SetValveStatus (Valves) returns (Valves) {}
+  rpc GetValveStatus (GetValveRequest) returns (Valves) {}
+  rpc GetSensorReading (GetSensorRequest) returns (Sensors) {}
+  rpc GetSensorStream (GetSensorRequest) returns (stream Sensors) {}
+  rpc SetSystemControl (Controls) returns (Controls) {}
+  rpc GetSystemControl (GetControlRequest) returns (Controls) {}
+
+}
+
+//Data Struct Messages
+
+//
+message SystemInfo {
+  int32 nodeID = 1;
+  string nodeDescription = 2;
+  string statusMsg = 3;
+}
+
+//
+message Sensors {
+  float tankLevel = 1;
+  float tankTemp = 2;
+  float dutFlow = 3;
+  float pumpTemp = 4;
+  float pumpSpeed = 5;
+  float dutPressIn = 6;
+  float dutPressOut = 7;
+  float dutTemp = 8;
+  float sumpLevel = 9;
+  float ambientTemp = 10;
+  float ambientPress = 11;
+}
+
+//
+message Valves {
+  bool tankFillIV = 1;
+  bool tankOutIV = 2;
+  bool tankDrainIV = 3;
+  bool dutInIV = 4;
+  bool dutOutIV = 5;
+  bool sumpDrainIV = 6;
+}
+
+//
+message Controls {
+  bool pumpEnable = 1;
+  float pumpDemand = 2;
+  bool sumppumpEnable = 3;
+}
+
+// Request and Response Messages
+
+//
+message SetSysInfoRequest {
+  SystemInfo system_info = 1;
+}
+
+//
+message SetSysInfResult {
+  SystemInfo system_info = 1;
+}
+
+//
+message GetSysInfRequest {
+  bool request = 1;
+}
+
+//
+message GetSysInfResult {
+  SystemInfo system_info = 1;
+}
+
+//
+message SetValveRequest {
+  Valves valves = 1;
+}
+
+//
+message SetValveResult {
+  Valves valves = 1;
+}
+
+//
+message GetValveRequest {
+  bool request = 1;
+}
+
+//
+message GetValveResult {
+  Valves valves = 1;
+}
+
+//
+message GetSensorRequest {
+  bool request = 1;
+}
+
+//
+message GetSensorResult {
+  Sensors sensors = 1;
+}
+
+//
+message SetControlRequest {
+  Controls controls = 1;
+}
+
+//
+message SetControlResult {
+  Controls controls = 1;
+}
+
+//
+message GetControlRequest {
+  bool request = 1;
+}
+
+//
+message GetControlResult {
+  Controls controls = 1;
+}
+
+
+
+
+//Old Messages to be deleted
+/*
+//
+message ParamsRequest {
+  string param = 1;
+}
+  
+//
+message StsRequest {
+  string status = 1;
+}
+  
+//
+message CtrlUpdate {
+  string channel = 1;
+  StsChannels values = 2;
+}
+
+
+
+//
+message StsChannels {
+  //Sensors stsSensors = 1;
+  //Valves stsValves = 2;
+  
+  float levelTank = 1;
+  float tempTank = 2;
+  float flowDUT = 3;
+  float tempPump = 4;
+  float speedPump = 5;
+  float pressDutIn = 6;
+  float pressDutOut = 7;
+  float tempDut = 8;
+  float levelSump = 9;
+  float tempAmbient = 10;
+  float pressAmbient = 11;
+  bool stsTankFillIV = 12;
+  bool stsTankOutIV = 13;
+  bool stsTankDrainIV = 14;
+  bool stsDutInIV = 15;
+  bool stsDutOutIV = 16;
+  bool stsSumpDrainIV = 17;
+  bool stsPumpEnable = 18;
+}
+*/
