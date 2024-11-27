@@ -53,6 +53,7 @@
 		<Item Name="UI Queue Element.ctl" Type="VI" URL="../controls/UI Queue Element.ctl"/>
 		<Item Name="Stream Loop States.ctl" Type="VI" URL="../controls/Stream Loop States.ctl"/>
 		<Item Name="Stream Queue Element.ctl" Type="VI" URL="../controls/Stream Queue Element.ctl"/>
+		<Item Name="waveform format test.vi" Type="VI" URL="../waveform format test.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="Simple Error Handler.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Simple Error Handler.vi"/>
