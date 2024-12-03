@@ -41,7 +41,7 @@ service PumpController {
   rpc SetValveStatus (Valves) returns (Valves) {}
   rpc GetValveStatus (GetValveRequest) returns (Valves) {}
   rpc GetSensorReading (GetSensorRequest) returns (Sensors) {}
-  rpc GetSensorStream (GetSensorRequest) returns (stream Sensors) {}
+  rpc GetSensorStream (GetStreamRequest) returns (stream Sensors) {}
   rpc SetSystemControl (Controls) returns (Controls) {}
   rpc GetSystemControl (GetControlRequest) returns (Controls) {}
 
@@ -133,6 +133,11 @@ message GetValveResult {
 //
 message GetSensorRequest {
   bool request = 1;
+}
+
+//
+message GetStreamRequest {
+  int32 length = 1;
 }
 
 //

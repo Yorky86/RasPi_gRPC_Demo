@@ -20,6 +20,7 @@ from concurrent import futures
 from numpy import random
 import time
 import logging
+import queue
 
 import grpc
 import pumploop_pb2 as pumploop_messages
@@ -144,7 +145,8 @@ class PumpController(pumploop_services.PumpControllerServicer):
             
     def GetSensorStream(self, request, context):
         print("Stream")
-        yield pumploop_messages.Sensors(tankLevel = sensors.tankLevel,
+        for i in range(request.length):
+            yield pumploop_messages.Sensors(tankLevel = sensors.tankLevel,
                                          tankTemp = sensors.tankTemp,
                                          dutFlow = sensors.dutFlow,
                                          pumpTemp = sensors.pumpTemp,
@@ -155,6 +157,7 @@ class PumpController(pumploop_services.PumpControllerServicer):
                                          sumpLevel = sensors.sumpLevel,
                                          ambientTemp = sensors.ambientTemp,
                                          ambientPress = sensors.ambientPress)
+        
     
     def SetSystemControl(self, request, context):
         controls.pumpEnable = request.pumpEnable
