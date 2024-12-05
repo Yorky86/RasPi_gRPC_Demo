@@ -120,6 +120,12 @@ class GetSensorRequest(_message.Message):
     request: bool
     def __init__(self, request: bool = ...) -> None: ...
 
+class GetStreamRequest(_message.Message):
+    __slots__ = ("length",)
+    LENGTH_FIELD_NUMBER: _ClassVar[int]
+    length: int
+    def __init__(self, length: _Optional[int] = ...) -> None: ...
+
 class GetSensorResult(_message.Message):
     __slots__ = ("sensors",)
     SENSORS_FIELD_NUMBER: _ClassVar[int]

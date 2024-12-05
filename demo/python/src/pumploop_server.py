@@ -20,7 +20,9 @@ from concurrent import futures
 from numpy import random
 import time
 import logging
-import queue
+#import asyncio
+import threading
+from concurrent.futures import ThreadPoolExecutor
 
 import grpc
 import pumploop_pb2 as pumploop_messages
@@ -79,7 +81,9 @@ dutFlowRampRateUp = 5
 dutFlowRampRateDown = 15
 processUpdatePeriod = 0.25
 
+NUM_OF_REPLY = 1000
 
+thread_local = threading.local()
 
 class PumpController(pumploop_services.PumpControllerServicer):
 
@@ -93,6 +97,7 @@ class PumpController(pumploop_services.PumpControllerServicer):
     #rpc GetSensorStream (GetSensorRequest) returns (stream GetSensorResult) {}
     #rpc SetSystemControl (CtrlUpdateRequest) returns (CtrlUpdateResult) {}
     #rpc GetSystemControl (GetControlValue) returns (GetControlResult) {}
+
             
     def SetSystemInfo(self, request, context):
         #node = pumploop_messages.SystemInfo(nodeID = request.nodeID, nodeDescription = request.nodeDescription)
@@ -145,8 +150,8 @@ class PumpController(pumploop_services.PumpControllerServicer):
             
     def GetSensorStream(self, request, context):
         print("Stream")
-        for i in range(request.length):
-            yield pumploop_messages.Sensors(tankLevel = sensors.tankLevel,
+        #for i in (NUM_OF_REPLY):
+        yield pumploop_messages.Sensors(tankLevel = sensors.tankLevel,
                                          tankTemp = sensors.tankTemp,
                                          dutFlow = sensors.dutFlow,
                                          pumpTemp = sensors.pumpTemp,
@@ -157,6 +162,7 @@ class PumpController(pumploop_services.PumpControllerServicer):
                                          sumpLevel = sensors.sumpLevel,
                                          ambientTemp = sensors.ambientTemp,
                                          ambientPress = sensors.ambientPress)
+                                          
         
     
     def SetSystemControl(self, request, context):
@@ -173,6 +179,32 @@ class PumpController(pumploop_services.PumpControllerServicer):
                                           sumppumpEnable = controls.sumppumpEnable)
 
 
+#async def main():
+#    await asyncio.gather(
+#        systemControlLoop(),
+#        serve()
+#        )
+#    
+#    """async with asyncio.TaskGroup() as tg:
+#        print("Create gRPC Server task")
+#        task1 = tg.create_task(
+#            serve())
+#        print("Create system control loop task")
+#        task2 = tg.create_task(
+#            systemControlLoop())"""
+#    
+#    print("Spin up task group")
+
+def main():
+    t1 = threading.Thread(target = serve)
+    t2 = threading.Thread(target = systemControlLoop)
+    
+    t1.start()
+    t2.start()
+    
+    t1.join()
+    t2.join()
+
 def serve():
     port = "50051"
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
@@ -180,8 +212,6 @@ def serve():
     server.add_insecure_port("[::]:" + port)
     server.start()
     print("Server started, listening on " + port)
-    print("Calling process model")
-    systemControlLoop()
     server.wait_for_termination()
 
 def systemControlLoop():
@@ -336,7 +366,8 @@ def systemControlLoop():
         
                     
         #Interlocking
-                    
+                 
+  
 
 """tankDrainRate = 1
 tankTempDriftRate = 0.2
@@ -353,5 +384,5 @@ systemCapacity = 5
 
 if __name__ == "__main__":
     logging.basicConfig()
-    serve()
+    main()
     
