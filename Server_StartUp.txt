@@ -1,5 +1,9 @@
-cd /home/yorky86/Projects/grpc_demo/
-source env/bin/activate
+cd /home/yorky86/Git/RasPi_gRPC_Demo/
+python -m venv gRPC_env
+gRPC_env/bin/pip install grpcio-tools
+gRPC_env/bin/pip install numpy
+
+source gRPC_env/bin/activate
 cd demo/python/src/
 python -m grpc_tools.protoc -I../../protos --python_out=. --pyi_out=. --grpc_python_out=. ../../protos/pumploop.proto
 python pumploop_server.py
